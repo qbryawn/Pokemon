@@ -46,22 +46,9 @@ Die Sammlung wird pro Browser und Gerät gespeichert. Regelmäßige Exporte übe
 
 ## GitHub-Repository
 
-Dieses Projekt ist für das Repository <https://github.com/qbryawn/Pokemon> vorbereitet. Nach aktivierten GitHub Pages ist die App unter folgender Adresse erreichbar:
+Der Quellcode liegt im privaten Repository <https://github.com/qbryawn/Pokemon>.
 
-<https://qbryawn.github.io/Pokemon/>
-
-## GitHub veröffentlichen
-
-```bash
-git init
-git add .
-git commit -m "Initiale Version der Kartenarchiv-PWA"
-git branch -M main
-git remote add origin https://github.com/qbryawn/Pokemon.git
-git push -u origin main
-```
-
-Die App kann anschließend kostenlos über GitHub Pages veröffentlicht werden: Repository → **Settings** → **Pages** → Branch `main`, Ordner `/ (root)`.
+GitHub Pages ist bewusst nicht aktiviert, damit das Projekt und die Website nicht öffentlich zugänglich werden. Die App wird daher aktuell lokal gestartet. Eine geschützte Online-Version benötigt später einen Hosting-Dienst mit Anmeldung oder Zugriffsschutz.
 
 ## Datenschutz
 
