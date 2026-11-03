@@ -1,0 +1,12 @@
+{
+  "name": "kartenarchiv",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Lokale PWA zur Verwaltung einer deutschen Pokémon-Kartensammlung.",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check js/app.js && node --check js/db.js && node --check js/cropper.js && node --check js/utils.js && node --check service-worker.js"
+  },
+  "license": "MIT"
+}

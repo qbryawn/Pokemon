@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5f6f8" />
+    <meta name="description" content="Private, offlinefähige Sammlung für deutsche Pokémon-Karten." />
+    <title>Kartenarchiv</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/icon.svg" />
+    <link rel="stylesheet" href="styles.css?v=4" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navigation">
+        <a class="brand" href="#" aria-label="Kartenarchiv Startseite">
+          <span class="brand-mark" aria-hidden="true"><span></span></span>
+          <span><strong>Kartenarchiv</strong><small>Meine Sammlung</small></span>
+        </a>
+
+        <nav class="nav-list">
+          <button class="nav-item active" data-filter="all" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h4A1.5 1.5 0 0 1 11 5.5v4A1.5 1.5 0 0 1 9.5 11h-4A1.5 1.5 0 0 1 4 9.5Zm9 0A1.5 1.5 0 0 1 14.5 4h4A1.5 1.5 0 0 1 20 5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4A1.5 1.5 0 0 1 13 9.5Zm-9 9A1.5 1.5 0 0 1 5.5 13h4a1.5 1.5 0 0 1 1.5 1.5v4A1.5 1.5 0 0 1 9.5 20h-4A1.5 1.5 0 0 1 4 18.5Zm9 0a1.5 1.5 0 0 1 1.5-1.5h4a1.5 1.5 0 0 1 1.5 1.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a1.5 1.5 0 0 1-1.5-1.5Z"/></svg>
+            Alle Karten <span id="navAllCount">0</span>
+          </button>
+          <button class="nav-item" data-filter="favorites" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m12 3 2.75 5.57 6.15.9-4.45 4.33 1.05 6.12L12 17.03l-5.5 2.89 1.05-6.12L3.1 9.47l6.15-.9Z"/></svg>
+            Favoriten <span id="navFavoriteCount">0</span>
+          </button>
+          <button class="nav-item" data-filter="duplicates" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="7" y="4" width="12" height="15" rx="2"/><path d="M5 8H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-1"/></svg>
+            Duplikate <span id="navDuplicateCount">0</span>
+          </button>
+          <button class="nav-item" data-filter="graded" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.45 2.99 8.55 7 10 4.01-1.45 7-5.55 7-10V6Z"/><path d="m9 12 2 2 4-5"/></svg>
+            Graded <span id="navGradedCount">0</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-foot">
+          <p><span class="privacy-dot"></span> Nur auf diesem Gerät</p>
+          <button class="text-button" id="openBackup" type="button">Backup &amp; Import</button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" id="pageEyebrow">DEINE SAMMLUNG</p>
+            <h1 id="pageTitle">Alle Karten</h1>
+          </div>
+          <button class="primary-button" id="addCardButton" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            Karte hinzufügen
+          </button>
+        </header>
+
+        <section class="stats-grid" aria-label="Sammlungsübersicht">
+          <article class="stat-card stat-featured">
+            <div class="stat-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2Z"/><path d="M8 4v16M18 8h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H7"/></svg></div>
+            <div><span>Karten gesamt</span><strong id="totalCards">0</strong></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon soft-blue"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 19h16M6 16l4-4 3 2 5-7"/></svg></div>
+            <div><span>Ungraded Wert</span><strong id="totalUngraded">0,00&nbsp;€</strong></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon soft-violet"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m12 3 2.75 5.57 6.15.9-4.45 4.33 1.05 6.12L12 17.03l-5.5 2.89 1.05-6.12L3.1 9.47l6.15-.9Z"/></svg></div>
+            <div><span>Graded Wert</span><strong id="totalGraded">0,00&nbsp;€</strong></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon soft-green"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="9" cy="9" r="5"/><path d="m13 13 7 7M16 16l2-2"/></svg></div>
+            <div><span>Duplikate</span><strong id="totalDuplicates">0</strong></div>
+          </article>
+        </section>
+
+        <section class="collection-panel">
+          <div class="toolbar">
+            <label class="search-field">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+              <input id="searchInput" type="search" placeholder="Karte, Set oder Nummer suchen" autocomplete="off" />
+              <kbd>⌘ K</kbd>
+            </label>
+            <select id="sortSelect" aria-label="Sortierung">
+              <option value="newest">Neueste zuerst</option>
+              <option value="name">Name A–Z</option>
+              <option value="number">Kartennummer</option>
+              <option value="value-desc">Wert: hoch nach niedrig</option>
+            </select>
+            <div class="view-toggle" aria-label="Ansicht">
+              <button class="active" data-view="grid" type="button" aria-label="Rasteransicht"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></button>
+              <button data-view="list" type="button" aria-label="Listenansicht"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button>
+            </div>
+          </div>
+
+          <div class="empty-state" id="emptyState">
+            <div class="empty-illustration" aria-hidden="true">
+              <div class="empty-card back"></div><div class="empty-card front"><span></span></div>
+            </div>
+            <h2>Deine Sammlung beginnt hier</h2>
+            <p>Fotografiere deine erste Karte oder wähle ein Bild aus. Der Zuschnitt passiert automatisch auf deinem Gerät.</p>
+            <button class="primary-button" id="emptyAddButton" type="button">Erste Karte hinzufügen</button>
+          </div>
+
+          <div class="cards-grid" id="cardsContainer" aria-live="polite"></div>
+        </section>
+      </main>
+    </div>
+
+    <nav class="mobile-nav" aria-label="Mobile Navigation">
+      <button class="active" data-filter="all" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h7v7H4zM13 5h7v7h-7zM4 14h7v7H4zM13 14h7v7h-7z"/></svg><span>Sammlung</span></button>
+      <button data-filter="favorites" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m12 3 2.75 5.57 6.15.9-4.45 4.33 1.05 6.12L12 17.03l-5.5 2.89 1.05-6.12L3.1 9.47l6.15-.9Z"/></svg><span>Favoriten</span></button>
+      <button class="mobile-add" id="mobileAddButton" type="button" aria-label="Karte hinzufügen"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button data-filter="duplicates" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="7" y="4" width="12" height="15" rx="2"/><path d="M5 8H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9"/></svg><span>Doppelte</span></button>
+      <button id="mobileBackup" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg><span>Backup</span></button>
+    </nav>
+
+    <dialog class="modal" id="cardModal">
+      <form method="dialog" id="cardForm">
+        <div class="modal-header">
+          <div><p class="eyebrow">SAMMLUNG</p><h2 id="modalTitle">Karte hinzufügen</h2></div>
+          <button class="icon-button" value="cancel" type="button" data-close-modal aria-label="Schließen">×</button>
+        </div>
+        <div class="modal-body card-form-layout">
+          <section class="image-section">
+            <input id="imageInput" type="file" accept="image/*" capture="environment" hidden />
+            <button class="image-dropzone" id="imageDropzone" type="button">
+              <img id="imagePreview" alt="Vorschau der Karte" hidden />
+              <span class="upload-prompt" id="uploadPrompt">
+                <span class="upload-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h3l1.5-2h7L17 7h3v12H4Z"/><circle cx="12" cy="13" r="4"/></svg></span>
+                <strong>Foto aufnehmen oder auswählen</strong>
+                <small>JPG, PNG oder HEIC · automatischer Zuschnitt</small>
+              </span>
+              <span class="processing" id="imageProcessing" hidden><span class="spinner"></span> Karte wird zugeschnitten …</span>
+            </button>
+            <button class="secondary-button full-width" id="replaceImage" type="button" hidden>Bild ersetzen</button>
+            <p class="privacy-note"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> Das Bild bleibt privat auf diesem Gerät.</p>
+          </section>
+
+          <section class="fields-section">
+            <input id="cardId" type="hidden" />
+            <div class="field-grid two">
+              <label><span>Kartenname</span><input id="cardName" name="name" placeholder="z. B. Glurak" required /></label>
+              <label><span>Kartennummer *</span><input id="cardNumber" name="number" placeholder="z. B. 199/165" required /></label>
+            </div>
+            <div class="field-grid two">
+              <label><span>Set</span><input id="cardSet" name="set" placeholder="z. B. 151" /></label>
+              <label><span>Sprache</span><select id="cardLanguage"><option value="Deutsch">Deutsch</option><option value="Englisch">Englisch</option><option value="Japanisch">Japanisch</option><option value="Andere">Andere</option></select></label>
+            </div>
+
+            <div class="section-heading"><span>Wert &amp; Zustand</span><i></i></div>
+            <div class="field-grid three">
+              <label><span>Ungraded Wert</span><div class="input-affix"><input id="ungradedValue" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" /><b>€</b></div></label>
+              <label><span>Kaufpreis</span><div class="input-affix"><input id="purchasePrice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" /><b>€</b></div></label>
+              <label><span>Zustand</span><select id="condition"><option value="Near Mint">Near Mint</option><option value="Excellent">Excellent</option><option value="Good">Good</option><option value="Light Played">Light Played</option><option value="Played">Played</option><option value="Poor">Poor</option></select></label>
+            </div>
+
+            <label class="switch-row"><span><strong>Karte ist gegradet</strong><small>Grading-Daten und Wert erfassen</small></span><input id="isGraded" type="checkbox" /><i></i></label>
+            <div class="grading-fields" id="gradingFields" hidden>
+              <div class="field-grid three">
+                <label><span>Grading</span><select id="gradingCompany"><option value="PSA">PSA</option><option value="BGS">BGS</option><option value="CGC">CGC</option><option value="GSG">GSG</option><option value="AP">AP</option><option value="Andere">Andere</option></select></label>
+                <label><span>Note</span><input id="grade" type="number" min="1" max="10" step="0.5" placeholder="10" /></label>
+                <label><span>Graded Wert</span><div class="input-affix"><input id="gradedValue" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" /><b>€</b></div></label>
+              </div>
+              <label><span>Zertifikatsnummer</span><input id="certificateNumber" placeholder="Optional" /></label>
+            </div>
+
+            <label><span>Notizen</span><textarea id="notes" rows="3" placeholder="Besonderheiten, Herkunft, Lagerort …"></textarea></label>
+            <label class="favorite-check"><input id="favorite" type="checkbox" /><span>★</span> Als Favorit markieren</label>
+          </section>
+        </div>
+        <div class="modal-footer">
+          <button class="danger-button" id="deleteCardButton" type="button" hidden>Karte löschen</button>
+          <span></span>
+          <button class="secondary-button" type="button" data-close-modal>Abbrechen</button>
+          <button class="primary-button" id="saveCardButton" type="submit">Karte speichern</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="modal small-modal" id="backupModal">
+      <div class="modal-header">
+        <div><p class="eyebrow">DATENSICHERUNG</p><h2>Backup &amp; Import</h2></div>
+        <button class="icon-button" type="button" data-close-backup aria-label="Schließen">×</button>
+      </div>
+      <div class="modal-body backup-content">
+        <div class="backup-card"><span class="backup-icon">↓</span><div><h3>Sammlung exportieren</h3><p>Speichert alle Daten und Bilder als JSON-Datei.</p></div><button class="secondary-button" id="exportBackup" type="button">Exportieren</button></div>
+        <div class="backup-card"><span class="backup-icon">↑</span><div><h3>Backup importieren</h3><p>Neue Karten ergänzen oder vorhandene aktualisieren.</p></div><button class="secondary-button" id="importBackup" type="button">Importieren</button><input id="backupInput" type="file" accept="application/json,.json" hidden /></div>
+        <p class="backup-warning">Bewahre dein Backup sicher auf. Beim Löschen von Browserdaten kann die lokale Sammlung sonst verloren gehen.</p>
+      </div>
+    </dialog>
+
+    <dialog class="confirm-dialog" id="confirmDialog">
+      <h3 id="confirmTitle">Karte löschen?</h3><p id="confirmText">Diese Aktion kann nicht rückgängig gemacht werden.</p>
+      <div><button class="secondary-button" id="confirmCancel" type="button">Abbrechen</button><button class="danger-button" id="confirmOkay" type="button">Löschen</button></div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="js/app.js?v=5"></script>
+  </body>
+</html>
